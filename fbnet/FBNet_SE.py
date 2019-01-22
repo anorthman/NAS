@@ -152,7 +152,7 @@ class FBNet_SE(object):
   def init_optimizer(self, lr_decay_step=None, cosine_decay_step=None):
     """Init optimizer, define updater.
     """
-    optimizer_params_w = {'learning_rate':0.005,
+    optimizer_params_w = {'learning_rate':0.05,
                           'momentum':0.9,
                           'clip_gradient': 10.0,
                           'wd':1e-4,
@@ -170,7 +170,7 @@ class FBNet_SE(object):
       
       lr_scheduler = CosineDecayScheduler_Grad(
         first_decay_step=cosine_decay_step,
-        t_mul=2.0, m_mul=0.95, alpha=0.001, base_lr=0.005,rise_region=300)
+        t_mul=1.5, m_mul=0.95, alpha=0.0001, base_lr=optimizer_params_w['learning_rate'], rise_region=300)
       # lr_scheduler = mx.lr_scheduler.CosineDecayScheduler(
       #     first_decay_step=cosine_decay_step,
       #     t_mul=2.0, m_mul=0.9, alpha=0.0001, base_lr=optimizer_params_w['learning_rate'])
@@ -179,8 +179,8 @@ class FBNet_SE(object):
     self._w_updater = mx.optimizer.get_updater(
       mx.optimizer.create('sgd', **optimizer_params_w))
 
-    optimizer_params_theta={'learning_rate':0.01,
-                            'wd':5e-4}
+    optimizer_params_theta={'learning_rate':0.001,
+                            'wd':1e-4}
     self._theta_updater = mx.optimizer.get_updater(
       mx.optimizer.create('adam', **optimizer_params_theta))
 
@@ -199,7 +199,7 @@ class FBNet_SE(object):
     for b_index in range(self._unistage):
 
       num_layers = self._n[b_index]
-      num_filter = self._f[b_index+ 1]
+      num_filter = self._f[b_index + 1]
 
       for l_index in range(num_layers):
         tmp_name = "layer_%d_%d_%s" % (b_index, l_index,self._theta_unique_name)
