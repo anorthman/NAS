@@ -152,10 +152,10 @@ class FBNet_SE(object):
   def init_optimizer(self, lr_decay_step=None, cosine_decay_step=None):
     """Init optimizer, define updater.
     """
-    optimizer_params_w = {'learning_rate':0.05,
+    optimizer_params_w = {'learning_rate':0.005,
                           'momentum':0.9,
                           'clip_gradient': 10.0,
-                          'wd':1e-4,
+                          'wd':5e-4,
                           'sym': self._loss,
                           'rescale_grad': 1.0 / self._batch_size}
     batch_num = self._num_examples / self._batch_size
@@ -170,7 +170,7 @@ class FBNet_SE(object):
       
       lr_scheduler = CosineDecayScheduler_Grad(
         first_decay_step=cosine_decay_step,
-        t_mul=1.5, m_mul=0.95, alpha=0.0001, base_lr=optimizer_params_w['learning_rate'], rise_region=300)
+        t_mul=1.1, m_mul=0.98, alpha=0.0001, base_lr=optimizer_params_w['learning_rate'], rise_region=300)
       # lr_scheduler = mx.lr_scheduler.CosineDecayScheduler(
       #     first_decay_step=cosine_decay_step,
       #     t_mul=2.0, m_mul=0.9, alpha=0.0001, base_lr=optimizer_params_w['learning_rate'])
@@ -179,7 +179,7 @@ class FBNet_SE(object):
     self._w_updater = mx.optimizer.get_updater(
       mx.optimizer.create('sgd', **optimizer_params_w))
 
-    optimizer_params_theta={'learning_rate':0.001,
+    optimizer_params_theta={'learning_rate':0.01,
                             'wd':1e-4}
     self._theta_updater = mx.optimizer.get_updater(
       mx.optimizer.create('adam', **optimizer_params_theta))
