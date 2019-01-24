@@ -7,3 +7,5 @@
 .idea/
 fbnet/model/
 fbnet/theta-result/
+*.tar.gz
+snas/cifar-10-batches-py/
