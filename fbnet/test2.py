@@ -84,7 +84,8 @@ fbnet = FBNet_SE(batch_size=args.batch_size,
               feature_dim=args.feature_dim,
 	      # load_model_path = args.model_save_path,
 	      save_model_path = args.model_save_path,
-              model_type=args.model_type)
+              model_type=args.model_type,
+              initializer=mx.init.MSRAPrelu(factor_type='in', slope=0.0))
 
 fbnet.search(train, val, start_w_epochs=10, 
 	           #lr_decay_step=args.lr_decay_step,
